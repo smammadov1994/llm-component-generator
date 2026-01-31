@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Sparkles, Copy, Check, ChevronDown, Code2, Eye, Zap } from 'lucide-react'
+import { Sparkles, Copy, Check, ChevronDown, Code2, Eye, Zap, Diamond } from 'lucide-react'
 
 const LLMS = [
   { id: 'gpt-4o', name: 'GPT-4o', provider: 'OpenAI', color: '#10a37f' },
@@ -34,7 +34,7 @@ function App() {
     setIsGenerating(true)
     setResults([])
     
-    // Simulate generation
+    // Simulate generation with premium animations
     setTimeout(() => {
       const mockResults = Array.from(selectedLLMs).map(llmId => {
         const llm = LLMS.find(l => l.id === llmId)
@@ -43,32 +43,46 @@ function App() {
           name: llm.name,
           provider: llm.provider,
           color: llm.color,
-          code: generateMockCode(prompt),
+          code: generateLuxuryCode(prompt),
         }
       })
       setResults(mockResults)
       setActiveTab(mockResults.reduce((acc, r) => ({ ...acc, [r.id]: 'code' }), {}))
-      setIsGenerating(false)
     }, 2000)
   }
 
-  const generateMockCode = (prompt) => {
-    return `import React, { useState } from 'react';
+  const generateLuxuryCode = (prompt) => {
+    return `import { useState } from 'react'
 
-export const GeneratedComponent = () => {
-  const [isOpen, setIsOpen] = useState(false);
+export default function GeneratedComponent() {
+  const [isActive, setIsActive] = useState(false)
 
   return (
-    <div className="component">
-      <h2>${prompt.slice(0, 30)}...</h2>
-      <button onClick={() => setIsOpen(!isOpen)}>
-        {isOpen ? 'Close' : 'Open'}
-      </button>
+    <div className="relative group overflow-hidden rounded-2xl bg-gradient-to-br from-purple-600/20 via-blue-600/20 to-indigo-600/20 backdrop-blur-xl border border-white/10 hover:border-white/30 transition-all duration-500">
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="relative z-10 p-8">
+        <div className="text-center">
+          <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+            ✨
+          </div>
+          <h3 className="text-2xl font-bold text-white mb-2">${prompt.slice(0, 20)}...</h3>
+          <p className="text-gray-300 mb-6">${prompt}</p>
+          <button 
+            className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full hover:from-purple-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105"
+          >
+            Get Started
+          </button>
+        </div>
+      </div>
     </div>
-  );
-};
+  )
+}`
+  }
 
-export default GeneratedComponent;`
+  const reset = () => {
+    setPrompt('')
+    setResults([])
+    setActiveTab({})
   }
 
   const copyCode = (code) => {
@@ -76,151 +90,164 @@ export default GeneratedComponent;`
   }
 
   return (
-    <div className="min-h-screen">
-      {/* Header */}
-      <header className="border-b border-gray-100 py-5">
-        <div className="container flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gray-900 rounded-xl flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-white" />
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+      {/* Premium Header */}
+      <div className="relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 via-blue-600/20 to-indigo-600/20 blur-3xl" />
+        <div className="relative z-10 px-6 py-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 text-sm font-medium text-purple-300 mb-4">
+              <Diamond className="w-4 h-4" />
+              <span>PREMIUM AI COMPONENT GENERATOR</span>
             </div>
+            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
+              ✨ LLM Generator
+            </h1>
+            <p className="text-xl text-gray-300 font-light max-w-2xl mx-auto">
+              Transform your ideas into stunning React components with AI-powered precision and resort-level elegance
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Form */}
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-8 mb-8 hover:bg-white/15 transition-all duration-300">
+          <div className="space-y-6">
             <div>
-              <h1 className="text-lg font-semibold">LLM Component Generator</h1>
-              <p className="text-sm text-gray-500">Compare React components from multiple LLMs</p>
+              <label className="flex items-center gap-2 text-sm font-semibold text-purple-300 mb-3 uppercase tracking-wide">
+                <Zap className="w-4 h-4" />
+                Component Vision
+              </label>
+              <textarea
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                placeholder="🎨 Describe your dream component...\n\nExample: A luxury pricing card with gold gradients, marble textures, and buttery-smooth interactions showcasing premium subscription tiers..."
+                className="w-full p-4 bg-white/5 border border-white/20 rounded-xl text-white placeholder-gray-300 focus:ring-2 focus:ring-purple-400 focus:border-purple-400 resize-none transition-all"
+                rows="5"
+              />
+            </div>
+
+            <div>
+              <label className="flex items-center gap-2 text-sm font-semibold text-purple-300 mb-3 uppercase tracking-wide">
+                <Sparkles className="w-4 h-4" />
+                AI Models
+              </label>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {LLMS.map((llm) => (
+                  <label
+                    key={llm.id}
+                    className={`p-3 rounded-xl cursor-pointer border transition-all ${
+                      selectedLLMs.has(llm.id)
+                        ? 'bg-white/20 border-white/40 text-white'
+                        : 'bg-white/5 border-white/10 text-gray-300 hover:bg-white/10'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={selectedLLMs.has(llm.id)}
+                        onChange={() => toggleLLM(llm.id)}
+                        className="sr-only"
+                      />
+                      <span className="flex w-3 h-3 rounded-full" style={{ backgroundColor: llm.color }}></span>
+                      <span className="text-sm font-medium">{llm.name}</span>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <button
+                onClick={generate}
+                disabled={isGenerating}
+                className="flex-1 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-purple-700 hover:via-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 disabled:transform-none"
+              >
+                {isGenerating ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    Crafting Magic...
+                  </span>
+                ) : 'Generate Components'}
+              </button>
+              {results.length > 0 && (
+                <button
+                  onClick={reset}
+                  className="px-6 py-3 bg-white/10 text-white rounded-xl font-semibold hover:bg-white/20 border border-white/20 transition-all"
+                >
+                  Reset
+                </button>
+              )}
             </div>
           </div>
-          <a 
-            href="https://github.com/smammadov1994" 
-            className="text-sm text-gray-500 hover:text-gray-900"
-          >
-            by @smammadov1994
-          </a>
         </div>
-      </header>
-
-      <main className="container py-8">
-        {/* Prompt Section */}
-        <div className="card p-6 mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Describe your component
-          </label>
-          <textarea
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            placeholder="e.g., Create a modern navigation bar with logo, search, and user menu..."
-            className="input mb-4 font-mono text-sm"
-            rows={3}
-          />
-          
-          <label className="block text-sm font-medium text-gray-700 mb-3">
-            Select LLMs to compare
-          </label>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-            {LLMS.map(llm => (
-              <button
-                key={llm.id}
-                onClick={() => toggleLLM(llm.id)}
-                className={`p-3 rounded-lg border text-left transition-all ${
-                  selectedLLMs.has(llm.id)
-                    ? 'border-gray-900 bg-gray-50'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <div 
-                    className="w-3 h-3 rounded-full" 
-                    style={{ background: llm.color }}
-                  />
-                  <div>
-                    <div className="text-sm font-medium">{llm.name}</div>
-                    <div className="text-xs text-gray-500">{llm.provider}</div>
-                  </div>
-                </div>
-              </button>
-            ))}
-          </div>
-
-          <button
-            onClick={generate}
-            disabled={isGenerating || !prompt.trim()}
-            className="btn btn-primary w-full"
-          >
-            <Zap className="w-4 h-4" />
-            {isGenerating ? 'Generating...' : 'Generate Components'}
-          </button>
-        </div>
-
-        {/* Loading */}
-        {isGenerating && (
-          <div className="card p-12 text-center">
-            <div className="spinner w-8 h-8 border-2 border-gray-200 border-t-gray-900 rounded-full mx-auto mb-4" />
-            <p className="text-gray-600">Generating components from {selectedLLMs.size} LLMs...</p>
-          </div>
-        )}
 
         {/* Results */}
         {results.length > 0 && (
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold mb-4">
-              Generated Components ({results.length})
-            </h2>
-            {results.map(result => (
-              <div key={result.id} className="card fade-in">
-                <div className="flex items-center justify-between p-4 border-b border-gray-100">
-                  <div className="flex items-center gap-3">
-                    <div 
-                      className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-medium"
-                      style={{ background: result.color }}
-                    >
-                      {result.name[0]}
+          <div className="space-y-6 mb-12">
+            {results.map((result) => (
+              <div key={result.id} className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl overflow-hidden hover:bg-white/15 transition-all">
+                <div className="p-6 border-b border-white/10">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="w-4 h-4 rounded-full"
+                        style={{ backgroundColor: result.color }}
+                      ></div>
+                      <div>
+                        <h3 className="font-bold text-white">{result.name}</h3>
+                        <p className="text-sm text-gray-400">{result.provider}</p>
+                      </div>
                     </div>
-                    <div>
-                      <div className="font-medium">{result.name}</div>
-                      <div className="text-sm text-gray-500">{result.provider}</div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setActiveTab({ ...activeTab, [result.id]: 'code' })}
+                        className={`px-3 py-1 text-sm rounded-lg ${
+                          activeTab[result.id] === 'code'
+                            ? 'bg-white/20 text-white'
+                            : 'text-gray-400 hover:text-white hover:bg-white/10'
+                        }`}
+                      >
+                        <Code2 className="w-4 h-4 inline mr-1" />
+                        Code
+                      </button>
+                      <button
+                        onClick={() => setActiveTab({ ...activeTab, [result.id]: 'preview' })}
+                        className={`px-3 py-1 text-sm rounded-lg ${
+                          activeTab[result.id] === 'preview'
+                            ? 'bg-white/20 text-white'
+                            : 'text-gray-400 hover:text-white hover:bg-white/10'
+                        }`}
+                      >
+                        <Eye className="w-4 h-4 inline mr-1" />
+                        Preview
+                      </button>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <button
-                      onClick={() => copyCode(result.code)}
-                      className="p-2 hover:bg-gray-100 rounded-lg transition"
-                      title="Copy"
-                    >
-                      <Copy className="w-4 h-4 text-gray-500" />
-                    </button>
                   </div>
                 </div>
-                <div className="p-4">
-                  <div className="flex gap-4 mb-3">
-                    <button
-                      onClick={() => setActiveTab({ ...activeTab, [result.id]: 'code' })}
-                      className={`flex items-center gap-2 text-sm px-3 py-1.5 rounded-md transition ${
-                        activeTab[result.id] === 'code'
-                          ? 'bg-gray-900 text-white'
-                          : 'text-gray-600 hover:bg-gray-100'
-                      }`}
-                    >
-                      <Code2 className="w-4 h-4" />
-                      Code
-                    </button>
-                    <button
-                      onClick={() => setActiveTab({ ...activeTab, [result.id]: 'preview' })}
-                      className={`flex items-center gap-2 text-sm px-3 py-1.5 rounded-md transition ${
-                        activeTab[result.id] === 'preview'
-                          ? 'bg-gray-900 text-white'
-                          : 'text-gray-600 hover:bg-gray-100'
-                      }`}
-                    >
-                      <Eye className="w-4 h-4" />
-                      Preview
-                    </button>
-                  </div>
+                <div className="p-6">
                   {activeTab[result.id] === 'code' ? (
-                    <pre className="bg-gray-900 text-gray-100 rounded-lg p-4 text-sm font-mono overflow-x-auto">
-                      <code>{result.code}</code>
-                    </pre>
+                    <div className="space-y-3">
+                      <div className="bg-black/40 backdrop-blur rounded-xl p-4 border border-white/5">
+                        <pre className="text-sm text-gray-200 overflow-x-auto font-mono">
+                          <code>{result.code}</code>
+                        </pre>
+                      </div>
+                      <button
+                        onClick={() => copyCode(result.code)}
+                        className="px-4 py-2 bg-white/10 text-white rounded-lg font-medium hover:bg-white/20 transition-all"
+                      >
+                        <Copy className="w-4 h-4 inline mr-2" />
+                        Copy Code
+                      </button>
+                    </div>
                   ) : (
-                    <div className="bg-gray-50 rounded-lg p-8 text-center">
-                      <p className="text-gray-500">Preview frame for {result.name}</p>
+                    <div className="bg-white/5 backdrop-blur rounded-xl p-4 border border-white/5">
+                      <div className="text-sm text-gray-400 mb-4">Preview unavailable</div>
+                      <div className="bg-black/20 rounded-lg p-4">
+                        <div className="text-xs font-mono text-gray-300">// Install React runtime to view preview</div>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -228,7 +255,14 @@ export default GeneratedComponent;`
             ))}
           </div>
         )}
-      </main>
+
+        {/* Footer */}
+        <footer className="text-center text-gray-400 mb-8">
+          <p className="text-sm">
+            Crafted with <Sparkles className="inline w-4 h-4 text-purple-400" /> using advanced AI models
+          </p>
+        </footer>
+      </div>
     </div>
   )
 }
